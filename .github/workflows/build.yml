@@ -29,7 +29,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload APK Release - ${{ env.repository_name }    
+    - name: Upload APK Release - ${{ env.repository_name }}    
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) release generated
