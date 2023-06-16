@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.crobridge.points.R
 import com.crobridge.points.db.Point
 import com.crobridge.points.databinding.ListItemPointBinding
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +40,8 @@ class PointAdapter(val clickListener: PointListener) : ListAdapter<DataItem,
     fun addHeaderAndSubmitList(list: List<Point>?) {
         adapterScope.launch {
             val items = when (list) {
-                null -> listOf(DataItem.Header)
-                else -> listOf(DataItem.Header) + list.map { DataItem.PointItem(it) }
+                null -> listOf(DataItem.HeaderItem)
+                else -> listOf(DataItem.HeaderItem) + list.map { DataItem.PointItem(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
@@ -52,7 +51,7 @@ class PointAdapter(val clickListener: PointListener) : ListAdapter<DataItem,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> {
+            is PointViewHolder -> {
                 val pointItem = getItem(position) as DataItem.PointItem
                 holder.bind(clickListener, pointItem.point)
             }
@@ -61,43 +60,43 @@ class PointAdapter(val clickListener: PointListener) : ListAdapter<DataItem,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
+            ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> PointViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
     }
 
-    class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class HeaderViewHolder(view: View): RecyclerView.ViewHolder(view) {
         companion object {
-            fun from(parent: ViewGroup): TextViewHolder {
+            fun from(parent: ViewGroup): HeaderViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.header, parent, false)
-                return TextViewHolder(view)
+                return HeaderViewHolder(view)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.HeaderItem -> ITEM_VIEW_TYPE_HEADER
             is DataItem.PointItem -> ITEM_VIEW_TYPE_ITEM
         }
     }
 
-    class ViewHolder private constructor(val binding: ListItemPointBinding)
+    class PointViewHolder private constructor(val binding: ListItemPointBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(clickListener: PointListener, item: Point) {
             binding.point = item
             binding.clickListener = clickListener
-            binding.executePendingBindings()
+            binding.executePendingBindings() // needed when using @BindingAdapters
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup): PointViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemPointBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                return PointViewHolder(binding)
             }
         }
     }
@@ -111,11 +110,11 @@ class PointAdapter(val clickListener: PointListener) : ListAdapter<DataItem,
  */
 class PointDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem === newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 }
 
@@ -123,14 +122,16 @@ class PointListener(val clickListener: (id: Long) -> Unit) {
     fun onClick(p: Point) = clickListener(p.id)
 }
 
+
+// because we have header as item in List
 sealed class DataItem {
     data class PointItem(val point: Point): DataItem() {
         override val id = point.id
     }
 
-    object Header: DataItem() {
+    object HeaderItem: DataItem() {
         override val id = Long.MIN_VALUE
     }
 
-    abstract val id: Long
+    abstract val id: Long // to be overriden by both implementations
 }

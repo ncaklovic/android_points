@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.crobridge.points.R
 import android.util.Log;
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.crobridge.points.PointAdapter
@@ -65,6 +66,7 @@ class GridFragment : Fragment() {
         binding.pointList.layoutManager = manager
 
         val adapter = PointAdapter(PointListener { pointId ->
+            Toast.makeText(context, "${pointId}", Toast.LENGTH_LONG).show()
             //viewModel.onPointClicked(pointId)
         })
 
