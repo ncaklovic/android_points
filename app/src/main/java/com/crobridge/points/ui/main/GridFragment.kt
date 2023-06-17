@@ -49,11 +49,6 @@ class GridFragment : Fragment() {
         _binding = FragmentGridBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val textView: TextView = binding.sectionLabel
-        pageViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-
         val app = requireNotNull(this.activity).application
         val dataSource = PointDb.getInstance(app).pointDbDao
         val viewModelFactory = ViewModelFactory(dataSource, app)

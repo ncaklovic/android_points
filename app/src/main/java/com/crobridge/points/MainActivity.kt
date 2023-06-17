@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         val tabs: TabLayout = binding.tabs
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             when (position){
-                0 -> tab.text = "DRAW"
-                1 -> tab.text = "GRID"
+                0 -> tab.text = getString(R.string.tab_text_1)
+                1 -> tab.text = getString(R.string.tab_text_2)
             }
         }.attach()
         val fab: FloatingActionButton = binding.fab
