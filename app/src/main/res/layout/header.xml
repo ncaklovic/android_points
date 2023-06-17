@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/text"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="@string/header_text"
-    android:padding="8dp" />
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/header_id"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/header_id"
+        />
+    <TextView
+        android:id="@+id/header_x"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/header_x"
+        />
+    <TextView
+        android:id="@+id/header_y"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/header_y"
+        />
+
+</LinearLayout>

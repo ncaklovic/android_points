@@ -2,5 +2,7 @@
     <string name="app_name">Točke</string>
     <string name="tab_text_1">crtež</string>
     <string name="tab_text_2">tablica</string>
-    <string name="header_text">Koordinate</string>
+    <string name="header_id">ID</string>
+    <string name="header_x">X</string>
+    <string name="header_y">Y</string>
 </resources>

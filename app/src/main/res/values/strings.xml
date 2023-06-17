@@ -2,5 +2,7 @@
     <string name="app_name">Points</string>
     <string name="tab_text_1">DRAW</string>
     <string name="tab_text_2">GRID</string>
-    <string name="header_text">Coordinates</string>
+    <string name="header_id">ID</string>
+    <string name="header_x">X</string>
+    <string name="header_y">Y</string>
 </resources>

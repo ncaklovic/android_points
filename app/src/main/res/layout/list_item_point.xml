@@ -29,19 +29,31 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/point_id"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/back"
+            android:text="@{String.valueOf(point.id)}"
+            />
+        <TextView
             android:id="@+id/x_coord"
             android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="@{String.valueOf(point.x)}"
-            />
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_weight="2"
+            android:background="@drawable/back"
+            android:text='@{String.format("%.1f", point.x)}'/>
 
         <TextView
             android:id="@+id/y_coord"
-            android:text="@{String.valueOf(point.y)}"
-            android:layout_weight="1"
+            android:text='@{String.format("%.1f", point.y)}'
+            android:gravity="center"
+            android:layout_weight="2"
             android:layout_height="match_parent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:background="@drawable/back"
          />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
