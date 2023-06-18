@@ -5,4 +5,6 @@
     <string name="header_id">ID</string>
     <string name="header_x">X</string>
     <string name="header_y">Y</string>
+    <string name="new_game">New Game</string>
+    <string name="load_game">Load Game</string>
 </resources>
