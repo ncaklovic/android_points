@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Points</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="tab_text_1">DRAW</string>
     <string name="tab_text_2">GRID</string>
     <string name="header_id">ID</string>
@@ -7,4 +9,6 @@
     <string name="header_y">Y</string>
     <string name="new_game">New Game</string>
     <string name="load_game">Load Game</string>
+    <string name="player1">North</string>
+    <string name="player2">East</string>
 </resources>

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Točke</string>
+    <string name="ok">Da</string>
+    <string name="cancel">Ne</string>
     <string name="tab_text_1">crtež</string>
     <string name="tab_text_2">tablica</string>
     <string name="header_id">ID</string>
@@ -7,4 +9,6 @@
     <string name="header_y">Y</string>
     <string name="new_game">Nova igra</string>
     <string name="load_game">Učitaj igru</string>
+    <string name="player1">igrač 1</string>
+    <string name="player2">igrač 2</string>
 </resources>

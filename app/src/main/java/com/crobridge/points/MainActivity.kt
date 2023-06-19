@@ -1,5 +1,6 @@
 package com.crobridge.points
 
+import android.content.DialogInterface
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.crobridge.points.databinding.NewGameBinding
 import com.crobridge.points.db.PointDb
 import com.crobridge.points.db.Polyline
 import com.crobridge.points.ui.main.PageViewModel
@@ -80,27 +82,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGame() {
-        val fmt = SimpleDateFormat.getDateInstance()
-        // val fmt = SimpleDateFormat.getDateTimeInstance()
-        // val fmt = SimpleDateFormat("dd.MM.yyyy hh:mm")
+        val fmt = SimpleDateFormat.getDateInstance()   //  SimpleDateFormat.getDateTimeInstance(), SimpleDateFormat("dd.MM.yyyy hh:mm")
         val items = polylines.map {
             "${it.name}, ${fmt.format(it.startTimeMilliSec)}"
         }.toTypedArray()
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Games")
+        builder.setTitle(R.string.load_game)
         builder.setItems(items) { dialog, index ->
-            // curent_game_id = index
+            loadGame(polylines[index].id)
         }
+        val dlg = builder.create()
+        dlg.show()
+    }
+
+    private fun loadGame(gameId : Long){
+        // TODO: set current game id
+    }
+
+    private fun newGame(){
+        val dialog_binding  = NewGameBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.new_game)
+        builder.setView(dialog_binding.root)
+        builder.setNegativeButton(R.string.cancel, null)
+        builder.setPositiveButton(R.string.ok,
+                DialogInterface.OnClickListener { dialog, id ->
+                    newGame(dialog_binding.player1.text.toString())
+                })
         val dialog = builder.create()
         dialog.show()
     }
 
-    private fun newGame(){
+    private fun newGame(name : String){
+        val p = Polyline()
+        p.name = name
         val dataSource = PointDb.getInstance(application).pointDbDao
         val viewModelFactory = ViewModelFactory(dataSource, application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(PointViewModel::class.java)
-        val p = Polyline()
-        p.name = "two"
         viewModel.addPolyline(p)
     }
 }
