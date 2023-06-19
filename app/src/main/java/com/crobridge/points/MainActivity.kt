@@ -14,10 +14,18 @@ import com.crobridge.points.ui.main.SectionsPagerAdapter
 import com.crobridge.points.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.crobridge.points.db.PointDb
+import com.crobridge.points.db.Polyline
+import com.crobridge.points.ui.main.PageViewModel
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: PointViewModel
+    private lateinit var polylines : List<Polyline>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +50,13 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+        val dataSource = PointDb.getInstance(application).pointDbDao
+        val viewModelFactory = ViewModelFactory(dataSource, application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PointViewModel::class.java)
+        viewModel.polylines.observe(this, Observer {
+            polylines = it
+        } )
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,11 +80,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGame() {
+        val fmt = SimpleDateFormat.getDateInstance()
+        // val fmt = SimpleDateFormat.getDateTimeInstance()
+        // val fmt = SimpleDateFormat("dd.MM.yyyy hh:mm")
+        val items = polylines.map {
+            "${it.name}, ${fmt.format(it.startTimeMilliSec)}"
+        }.toTypedArray()
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Games")
-
-        val animals = arrayOf("one", "two", "three", "four", "five")
-        builder.setItems(animals) { dialog, index ->
+        builder.setItems(items) { dialog, index ->
             // curent_game_id = index
         }
         val dialog = builder.create()
@@ -77,6 +96,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun newGame(){
-
+        val dataSource = PointDb.getInstance(application).pointDbDao
+        val viewModelFactory = ViewModelFactory(dataSource, application)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(PointViewModel::class.java)
+        val p = Polyline()
+        p.name = "two"
+        viewModel.addPolyline(p)
     }
 }

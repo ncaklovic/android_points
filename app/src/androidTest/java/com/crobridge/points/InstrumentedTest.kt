@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.crobridge.points.db.Point
+import com.crobridge.points.db.Polyline
 import com.crobridge.points.db.PointDao
 import com.crobridge.points.db.PointDb
 import kotlinx.coroutines.runBlocking
@@ -53,6 +54,19 @@ class PointDbTest {
         val n2 = pointDao.insert(p)
         val points = pointDao.getAllPoints()
         assertEquals(2, points.value?.size)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetPolyline() = runBlocking {
+        val p = Polyline()
+        p.name = "one"
+        val n1 = pointDao.insert(p)
+        p.name = "two"
+        val n2 = pointDao.insert(p)
+        assertEquals(2, n2)
+        val polylines = pointDao.getAllPolylines()
+        assertEquals(2, polylines.value?.size)
     }
 
     @Test

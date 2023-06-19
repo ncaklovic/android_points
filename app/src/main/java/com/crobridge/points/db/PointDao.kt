@@ -27,4 +27,11 @@ interface PointDao {
 
 //    @Query("SELECT * FROM crobridge_points WHERE id = :key")
 //    fun getPoint(key: Long): LiveData<Point>
+
+
+    @Insert
+    suspend fun insert(p: Polyline) : Long
+
+    @Query("SELECT * FROM polyline")
+    fun getAllPolylines(): LiveData<List<Polyline>>
 }
