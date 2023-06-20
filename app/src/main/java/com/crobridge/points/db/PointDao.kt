@@ -34,4 +34,8 @@ interface PointDao {
 
     @Query("SELECT * FROM polyline")
     fun getAllPolylines(): LiveData<List<Polyline>>
+
+    @Query("SELECT * FROM polyline WHERE id = :polyline_id")
+    fun getCurrent(polyline_id: Long): LiveData<Polyline>
+
 }

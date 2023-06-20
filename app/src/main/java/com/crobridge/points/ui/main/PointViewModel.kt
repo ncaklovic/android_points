@@ -16,12 +16,10 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
     }
 
     fun addPoint(p : Point){
-        current_polyline?.let {
-            if(it.value!! != 0L){
-                p.polyline_id = it.value!!
-                viewModelScope.launch {
-                    insert(p)
-                }
+        if (current_polyline != null && current_polyline.value != 0L){
+            p.polyline_id = current_polyline.value!!
+            viewModelScope.launch {
+                insert(p)
             }
         }
     }
@@ -45,6 +43,10 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
 
     fun setPolylineId(polyline_id : Long){
         current_polyline.value = polyline_id
+    }
+
+    val current_poly = current_polyline.switchMap {  current_polyline ->
+        db.getCurrent(current_polyline)
     }
 
 }
