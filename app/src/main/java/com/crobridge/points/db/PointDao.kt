@@ -19,8 +19,8 @@ interface PointDao {
 //    @Query("DELETE FROM point")
 //    suspend fun clear() : Int
 
-    @Query("SELECT * FROM point")
-    fun getAllPoints(): LiveData<List<Point>>
+    @Query("SELECT * FROM point WHERE polyline = :polyline_id")
+    fun getAllPoints(polyline_id: Long): LiveData<List<Point>>
 
 //    @Query("SELECT * FROM crobridge_points ORDER BY id DESC LIMIT 1")
 //    suspend fun getLast(): Point?

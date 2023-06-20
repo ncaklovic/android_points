@@ -10,21 +10,29 @@ import kotlinx.coroutines.launch
 
 class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app) {
 
+    private val current_polyline = MutableLiveData<Long>(0)
     private suspend fun insert(p : Point) {
         db.insert(p)
     }
 
     fun addPoint(p : Point){
-        viewModelScope.launch {
-            insert(p)
+        current_polyline?.let {
+            if(it.value!! != 0L){
+                p.polyline_id = it.value!!
+                viewModelScope.launch {
+                    insert(p)
+                }
+            }
         }
     }
 
-    val points = db.getAllPoints()
-
+    // switchMap -> refresh for new id
+    val points = current_polyline.switchMap {  current_polyline ->
+        db.getAllPoints(current_polyline)
+    }
 
     private suspend fun insert(p : Polyline) {
-        db.insert(p)
+        current_polyline.value = db.insert(p)
     }
 
     fun addPolyline(p : Polyline){
@@ -34,5 +42,9 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
     }
 
     val polylines = db.getAllPolylines()
+
+    fun setPolylineId(polyline_id : Long){
+        current_polyline.value = polyline_id
+    }
 
 }

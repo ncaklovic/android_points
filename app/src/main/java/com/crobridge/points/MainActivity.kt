@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGame(gameId : Long){
-        // TODO: set current game id
+        viewModel.setPolylineId(gameId)
     }
 
     private fun newGame(){

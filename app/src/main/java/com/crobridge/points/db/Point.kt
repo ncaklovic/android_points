@@ -10,6 +10,9 @@ data class Point(
         @PrimaryKey(autoGenerate = true)
         var id: Long = 0L,
 
+        @ColumnInfo(name = "polyline")
+        var polyline_id: Long = 0L,
+
         @ColumnInfo(name = "x")
         var x: Float = 0F,
 

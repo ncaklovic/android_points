@@ -52,7 +52,7 @@ class GridFragment : Fragment() {
         val app = requireNotNull(this.activity).application
         val dataSource = PointDb.getInstance(app).pointDbDao
         val viewModelFactory = ViewModelFactory(dataSource, app)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PointViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(PointViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
