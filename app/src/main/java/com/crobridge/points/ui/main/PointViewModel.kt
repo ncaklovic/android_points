@@ -49,4 +49,8 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
         db.getCurrent(current_polyline)
     }
 
+    val total = current_polyline.switchMap {  current_polyline ->
+        db.getTotal(current_polyline)
+    }
+
 }

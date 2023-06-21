@@ -38,4 +38,6 @@ interface PointDao {
     @Query("SELECT * FROM polyline WHERE id = :polyline_id")
     fun getCurrent(polyline_id: Long): LiveData<Polyline>
 
+    @Query("SELECT AVG(x) AS avg_x, AVG(y) AS avg_y FROM point WHERE polyline = :polyline_id")
+    fun getTotal(polyline_id: Long): LiveData<Total>
 }
