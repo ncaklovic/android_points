@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
                 loadGame()
                 true
             }
+            R.id.delete_last -> {
+                viewModel.delete_last_point()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

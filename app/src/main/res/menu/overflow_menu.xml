@@ -9,4 +9,8 @@
     <item
         android:id="@+id/load_game"
         android:title="@string/load_game" />
+
+    <item
+        android:id="@+id/delete_last"
+        android:title="@string/delete_last" />
 </menu>

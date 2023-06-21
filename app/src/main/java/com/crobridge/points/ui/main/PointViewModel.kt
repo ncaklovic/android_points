@@ -6,7 +6,9 @@ import com.crobridge.points.db.Point
 import com.crobridge.points.db.Polyline
 //import androidx.lifecycle.Transformations
 import com.crobridge.points.db.PointDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app) {
 
@@ -16,7 +18,7 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
     }
 
     fun addPoint(p : Point){
-        if (current_polyline != null && current_polyline.value != 0L){
+        if (current_polyline.value != 0L){
             p.polyline_id = current_polyline.value!!
             viewModelScope.launch {
                 insert(p)
@@ -51,6 +53,18 @@ class PointViewModel(val db: PointDao, app: Application) : AndroidViewModel(app)
 
     val total = current_polyline.switchMap {  current_polyline ->
         db.getTotal(current_polyline)
+    }
+
+    private suspend fun delete_last() = withContext(Dispatchers.Default) {
+        db.deleteLastPoint(current_polyline.value!!)
+    }
+
+    fun delete_last_point() {
+        if (current_polyline.value != 0L){
+            viewModelScope.launch {
+                delete_last()
+            }
+        }
     }
 
 }

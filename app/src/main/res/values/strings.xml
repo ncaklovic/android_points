@@ -9,6 +9,7 @@
     <string name="header_y">Y</string>
     <string name="new_game">New Game</string>
     <string name="load_game">Load Game</string>
+    <string name="delete_last">Undo</string>
     <string name="player1">North</string>
     <string name="player2">East</string>
 </resources>

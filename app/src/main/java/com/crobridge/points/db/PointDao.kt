@@ -13,21 +13,8 @@ interface PointDao {
     @Insert
     suspend fun insert(p: Point) : Long
 
-    //   @Update
-//    suspend fun update(p: Point)
-
-//    @Query("DELETE FROM point")
-//    suspend fun clear() : Int
-
     @Query("SELECT * FROM point WHERE polyline = :polyline_id")
     fun getAllPoints(polyline_id: Long): LiveData<List<Point>>
-
-//    @Query("SELECT * FROM crobridge_points ORDER BY id DESC LIMIT 1")
-//    suspend fun getLast(): Point?
-
-//    @Query("SELECT * FROM crobridge_points WHERE id = :key")
-//    fun getPoint(key: Long): LiveData<Point>
-
 
     @Insert
     suspend fun insert(p: Polyline) : Long
@@ -40,4 +27,8 @@ interface PointDao {
 
     @Query("SELECT AVG(x) AS avg_x, AVG(y) AS avg_y FROM point WHERE polyline = :polyline_id")
     fun getTotal(polyline_id: Long): LiveData<Total>
+
+    @Query("DELETE FROM point WHERE id = (SELECT MAX(id) FROM point WHERE polyline = :polyline_id)")
+    fun deleteLastPoint(polyline_id: Long)
+
 }
