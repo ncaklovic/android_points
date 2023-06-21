@@ -1,4 +1,4 @@
-name: Android CI
+name: Android Build
 
 env:
   # The name of the main module repository
@@ -31,36 +31,3 @@ jobs:
       run: ./gradlew test
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload APK Release - ${{ env.repository_name }}    
-      uses: actions/upload-artifact@v3
-      with:
-        name: apk
-        path: ${{ env.main_project_module }}/build/outputs/apk/debug/
-
-  release:
-   name: Release APK
-   needs: build
-   runs-on: ubuntu-latest
-   steps:
-     - name: Download APK from build
-       uses: actions/download-artifact@v1
-       with:
-         name: apk
-     - name: Create Release
-       id: create_release
-       uses: actions/create-release@v1
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         tag_name: ${{ github.run_number }}
-         release_name: ${{ github.event.repository.name }} v${{ github.run_number }}
-     - name: Upload Release APK
-       id: upload_release_asset
-       uses: actions/upload-release-asset@v1.0.1
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: apk/app-debug.apk
-         asset_name: ${{ github.event.repository.name }}.apk
-         asset_content_type: application/zip         
