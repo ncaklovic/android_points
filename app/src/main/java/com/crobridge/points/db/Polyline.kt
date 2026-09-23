@@ -11,7 +11,7 @@ data class Polyline(
         var id: Long = 0L,
 
         @ColumnInfo(name = "start_time")
-        val startTimeMilliSec: Long = System.currentTimeMillis(),
+        var startTimeMilliSec: Long = System.currentTimeMillis(),
 
         @ColumnInfo(name = "name")
         var name: String = ""
